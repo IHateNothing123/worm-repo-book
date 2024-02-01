@@ -1,0 +1,117 @@
+﻿@page
+@model BookwormsOnlineAssignment.Pages.RegisterModel
+@section Scripts
+	{
+	<script type="text/javascript">
+		function validate() {
+			var str = document.getElementById("password").value;
+			var errors = "";
+
+			if (str.length < 12) {
+				errors += "Password length must be at least 12 characters<br />";
+			}
+			if (str.search(/[a-z]/) == -1) {
+				errors += "Password requires at least 1 lower-case letter<br />"
+			}
+			if (str.search(/[A-Z]/) == -1) {
+				errors += "Password requires at least 1 upper-case letter<br />"
+			}
+			if (str.search(/[0-9]/) == -1) {
+				errors += "Password requires at least 1 number<br />"
+			}
+			if (str.search(/[^A-Za-z0-9]/) == -1) {
+				errors += "Password requires at least 1 special character<br />"
+			}
+
+			if (errors != "") {
+				document.getElementById("password_validation_msg").innerHTML = errors;
+				document.getElementById("password_validation_msg").style.color = "Red";
+				return ("bad_password")
+			}
+			else {
+				document.getElementById("password_validation_msg").innerHTML = "Good password";
+				document.getElementById("password_validation_msg").style.color = "Green";
+
+			}
+		}
+
+		grecaptcha.ready(function () {
+			grecaptcha.execute('6LcVzGIpAAAAANGPNFU1tK5bPvk41OE5kz-UedOI', { action: 'homepage' }).then(function (token) {
+				document.getElementById("foo").value = token;
+			});
+		});
+	</script>
+}
+
+<div class="container mt-5">
+
+	<div class="row justify-content-center align-items-center">
+
+		<div class="col-sm-12 col-md-12 col-lg-4">
+			<h1 class="mb-3">Register </h1>
+
+			<form method="post">
+				<div asp-validation-summary="All" class="text-danger"></div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.Email">Email Address</label>
+					<input type="Text" asp-for="RModel.Email" class="form-control" />
+					<span asp-validaton-for="RModel.Email" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.Password">Password</label>
+					<input type="Text" asp-for="RModel.Password" class="form-control" id="password" onkeyup="javascript:validate()" />
+					<span asp-validaton-for="RModel.Password" class="text-danger"></span>
+					<label id="password_validation_msg"></label>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.ConfirmPassword">Confirm Password</label>
+					<input type="Text" asp-for="RModel.ConfirmPassword" class="form-control" />
+					<span asp-validaton-for="RModel.ConfirmPassword" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.FirstName">First Name</label>
+					<input type="Text" asp-for="RModel.FirstName" class="form-control" />
+					<span asp-validaton-for="RModel.FirstName" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.LastName">Last Name</label>
+					<input type="Text" asp-for="RModel.LastName" class="form-control" />
+					<span asp-validaton-for="RModel.LastName" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.CreditCard">Credit card</label>
+					<input type="Text" asp-for="RModel.CreditCard" class="form-control" />
+					<span asp-validaton-for="RModel.CreditCard" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.PhoneNumber">Mobile number</label>
+					<input type="Text" asp-for="RModel.PhoneNumber" class="form-control" />
+					<span asp-validaton-for="RModel.PhoneNumber" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.BillingAddress">Billing address</label>
+					<input type="Text" asp-for="RModel.BillingAddress" class="form-control" />
+					<span asp-validaton-for="RModel.BillingAddress" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.ShippingAddress">Shipping address</label>
+					<input type="Text" asp-for="RModel.ShippingAddress" class="form-control" />
+					<span asp-validaton-for="RModel.ShippingAddress" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<button type="submit" class="btn btn-primary">Register</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
