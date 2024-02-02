@@ -1,5 +1,6 @@
 using System.Net;
 using BookwormsOnlineAssignment.Models;
+using BookwormsOnlineAssignment.Services;
 using BookwormsOnlineAssignment.ViewModels;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
@@ -17,10 +18,12 @@ namespace BookwormsOnlineAssignment.Pages
 
 		private readonly SignInManager<ApplicationUser> signInManager;
 		private readonly UserManager<ApplicationUser> userManager;
-		public LoginModel(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+		private readonly AuditLogService auditLogService;
+		public LoginModel(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, AuditLogService auditLogService)
 		{
 			this.signInManager = signInManager;
 			this.userManager = userManager;
+			this.auditLogService = auditLogService;
 		}
 
         //private readonly IHttpContextAccessor contxt;
@@ -44,12 +47,12 @@ namespace BookwormsOnlineAssignment.Pages
 				}
 
 				var identityResult = await signInManager.PasswordSignInAsync(LModel.Email, LModel.Password, LModel.RememberMe, true);
-				if (identityResult.Succeeded)
-				{
-					var dataProtectionProvider = DataProtectionProvider.Create("EncryptData");
-					var protector = dataProtectionProvider.CreateProtector("MySecretKey");
-					var user = await userManager.FindByEmailAsync(LModel.Email);
+                var dataProtectionProvider = DataProtectionProvider.Create("EncryptData");
+                var protector = dataProtectionProvider.CreateProtector("MySecretKey");
+                var user = await userManager.FindByEmailAsync(LModel.Email);
 
+                if (identityResult.Succeeded)
+				{
                     HttpContext.Session.SetString("ID", user.Id);
                     HttpContext.Session.SetString("Email", user.Email);
                     HttpContext.Session.SetString("FirstName", user.FirstName);
@@ -59,14 +62,18 @@ namespace BookwormsOnlineAssignment.Pages
                     HttpContext.Session.SetString("BillingAddress", user.BillingAddress);
                     HttpContext.Session.SetString("ShippingAddress", user.ShippingAddress);
 
+                    auditLogService.LogActivity(user.Id, "User signed in", $"Email: {user.Email}");
+
                     return RedirectToPage("Index");
 				}
 
 				if (identityResult.IsLockedOut)
 				{
                     ModelState.AddModelError("", "Account has been locked. Please wait a few minutes and try again.");
-                }
+                    auditLogService.LogActivity(user.Id, "Locked out", $"Email: {user.Email}");
 
+                }
+                auditLogService.LogActivity(user.Id, "Failed login attempt", $"Email: {user.Email}");
                 ModelState.AddModelError("", "Username or Password incorrect");
 			}
 			return Page();

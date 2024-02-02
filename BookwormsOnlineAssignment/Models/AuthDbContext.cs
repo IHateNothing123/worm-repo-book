@@ -7,6 +7,9 @@ namespace BookwormsOnlineAssignment.Models
     {
         private readonly IConfiguration _configuration;
         //public AuthDbContext(DbContextOptions<AuthDbContext> options):base(options){ }
+
+        public DbSet<AuditLog> AuditLogs { get; set; }
+
         public AuthDbContext(IConfiguration configuration)
         {
             _configuration = configuration;

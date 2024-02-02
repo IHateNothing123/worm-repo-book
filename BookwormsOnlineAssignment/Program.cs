@@ -1,4 +1,5 @@
 using BookwormsOnlineAssignment.Models;
+using BookwormsOnlineAssignment.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,6 +15,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 })
     .AddEntityFrameworkStores<AuthDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<AuditLogService>();
 
 // Redirect if on [Authorized] page
 builder.Services.ConfigureApplicationCookie(Config =>
