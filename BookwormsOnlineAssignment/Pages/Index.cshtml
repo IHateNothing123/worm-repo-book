@@ -1,5 +1,6 @@
 ﻿@page
 @using Microsoft.AspNetCore.Http
+@using System.Net
 @inject IHttpContextAccessor HttpContextAccessor
 @model IndexModel
 @{
@@ -10,5 +11,11 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 
-    <p>Current value: @HttpContextAccessor.HttpContext.Session.GetString("StudentName")</p>
+    <p>Email: @HttpContextAccessor.HttpContext.Session.GetString("Email")</p>
+    <p>First name: @HttpContextAccessor.HttpContext.Session.GetString("FirstName")</p>
+    <p>Last name: @HttpContextAccessor.HttpContext.Session.GetString("LastName")</p>
+    <p>Credit card: @HttpContextAccessor.HttpContext.Session.GetString("CreditCard")</p>
+    <p>Phone number: @HttpContextAccessor.HttpContext.Session.GetString("PhoneNumber")</p>
+    <p>Bililng address: @WebUtility.HtmlDecode(HttpContextAccessor.HttpContext.Session.GetString("BillingAddress"))</p>
+    <p>Shipping address: @WebUtility.HtmlDecode(HttpContextAccessor.HttpContext.Session.GetString("ShippingAddress"))</p>
 </div>

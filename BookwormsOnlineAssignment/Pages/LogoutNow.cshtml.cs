@@ -5,28 +5,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BookwormsOnlineAssignment.Pages
 {
-    public class LogoutModel : PageModel
+    public class LogoutNowModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> signInManager;
-        public LogoutModel(SignInManager<ApplicationUser> signInManager)
+        public LogoutNowModel(SignInManager<ApplicationUser> signInManager)
         {
             this.signInManager = signInManager;
         }
 
-        public void OnGet()
-        {
-        }
-
-        public async Task<IActionResult> OnPostLogoutAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             await signInManager.SignOutAsync();
             HttpContext.Session.Clear();
             return RedirectToPage("Login");
-        }
-
-        public async Task<IActionResult> OnPostDontLogoutAsync()
-        {
-            return RedirectToPage("Index");
         }
     }
 }

@@ -11,6 +11,20 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BookwormsOnlineAssignment.styles.css" asp-append-version="true" />
+    <script>
+        var logoutTimeout;
+
+        // Reset the timeout whenever there's user activity
+        document.addEventListener('mousemove', function () {
+            clearTimeout(logoutTimeout);
+            logoutTimeout = setTimeout(logout, 15 * 1000); // 30 seconds inactivity timeout
+        });
+
+        function logout() {
+            // Perform logout operation, e.g., redirect to logout page
+            window.location.href = '/LogoutNow';
+        }
+    </script>
 </head>
 <body>
     <header>
@@ -36,6 +50,10 @@
                             </ul>
 
                             <ul class="navbar-nav d-flex justify-content-end">
+                                <li class="nav-item">
+                                    <a class="btn btn-primary" asp-area="" asp-page="/ChangePassword">Change password</a>
+                                </li>
+
                                 <li class="nav-item">
                                     <a class="btn btn-primary" asp-area="" asp-page="/Logout">Logout</a>
                                 </li>
